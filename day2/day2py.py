@@ -19,9 +19,16 @@ for ra in r:
         num_len = len(s_num)
         for i in range(1, num_len // 2 + 1):
             if num_len % i == 0:
-                if s_num == s_num[:i] * (num_len // i):
-                    total += int(s_num)
+                a = s_num.split(s_num[:i])
+                flag = False
+                for e in a:
+                    if e != "":
+                        flag = True
+                if flag == False:
+                    total += num
                     break
+
+                    
 
 print(total)
 
