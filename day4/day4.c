@@ -61,41 +61,50 @@ int main(void)
 
     Coordinate coordsToCheck[] = {
         {-1, -1}, {0, -1},  {1, -1},
-        {-1, 0},            {1, 0},
-        {-1, 1},  {0, 1},   {1, 1}
+        {-1,  0},           {1,  0},
+        {-1,  1}, {0,  1},  {1,  1}
     };
+
     int NO_OF_COORDINATE_TO_CHECK = sizeof(coordsToCheck) / sizeof(Coordinate);
 
     int p1_total = 0;
     int p2_total = 0;
-    
- 
-    for (int i = 0; i < paperRollCoords.size; i++) 
-    {
-        int noOfRollsAround = 0;
-        for (int k = 0; k < NO_OF_COORDINATE_TO_CHECK; k++)
+
+    while (true) {
+        bool removed = false;
+        for (int i = 0; i < paperRollCoords.size; i++) 
         {
-            Coordinate target = {
-                    .x = paperRollCoords.coordinates[i].x + coordsToCheck[k].x,
-                    .y = paperRollCoords.coordinates[i].y + coordsToCheck[k].y
-            };
-            if (target.x < 0 || target.y < 0 || target.x >= gridWidth || target.y >= gridHeight)
+            int noOfRollsAround = 0;
+            for (int k = 0; k < NO_OF_COORDINATE_TO_CHECK; k++)
             {
-                continue;
-            } 
-            if (isPaperRoll(target, paperRollCoords))
+                Coordinate target = {
+                        .x = paperRollCoords.coordinates[i].x + coordsToCheck[k].x,
+                        .y = paperRollCoords.coordinates[i].y + coordsToCheck[k].y
+                };
+                if (target.x < 0 || target.y < 0 || target.x >= gridWidth || target.y >= gridHeight)
+                {
+                    continue;
+                } 
+                if (isPaperRoll(target, paperRollCoords))
+                {
+                    noOfRollsAround++;
+                }
+            }
+            if (noOfRollsAround < 4 && !paperRollCoords.coordinates[i].removed)
             {
-                noOfRollsAround++;
+                removed = true;
+                p2_total++;
+                paperRollCoords.coordinates[i].removed = true;
             }
         }
-        if (noOfRollsAround < 4)
+        if (!removed) 
         {
-            p1_total++;
+            break;
         }
     }
 
 
-    printf("%i", p1_total);
+    printf("%i", p2_total);
     free(paperRollCoords.coordinates);
     return 0;
 }
@@ -106,7 +115,7 @@ bool isPaperRoll(Coordinate target, CoordArray paperRollCoords)
 
     for (int i = 0; i < paperRollCoords.size; i++)
     {
-        if (paperRollCoords.coordinates[i].x == target.x && paperRollCoords.coordinates[i].y == target.y)
+        if (paperRollCoords.coordinates[i].x == target.x && paperRollCoords.coordinates[i].y == target.y && !paperRollCoords.coordinates[i].removed)
         {
             return true;
         }
