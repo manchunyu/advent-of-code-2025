@@ -23,20 +23,17 @@ var total : Long = 0
 //}
 for (line in content) {
 
-    val nums = line.map { it.toString().toInt() }.toMutableList()
-    val arr = Array<Int>(nums.size) {0}.toMutableList()
-
-    repeat(12) {
-
-        val maxDigit = nums.max()
+    var nums = line.map { it.toString().toInt() }.toMutableList()
+    var max = ""
+    var digitsNeeded = 12
+    while (digitsNeeded != 0) {
+        val maxDigit = nums.slice(0..nums.size - digitsNeeded).max()
         val index = nums.indexOf(maxDigit)
-        arr[index] = maxDigit
-        nums[index] = 0
+        nums = nums.slice(index + 1 until nums.size).toMutableList()
+        max += maxDigit
+        digitsNeeded--
     }
-    val new_arr = arr.filter { it != 0 }
 
-
-    println(new_arr.joinToString("").toLong())
-    total +=new_arr.joinToString("").toLong()
+    total += max.toLong()
 }
 println(total)
