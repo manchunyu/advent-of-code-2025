@@ -6,6 +6,7 @@
 typedef struct {
     long min;
     long max;
+    bool isActive;
 } Range;
 
 typedef struct {
@@ -33,11 +34,18 @@ int main(void)
         .capacity = 50000 // TO CHANGE!
     };
 
-    IdArray idArr = {
-        .ids = NULL,
+    RangeArray newRangeArr = {
+        .ranges = NULL,
         .size = 0,
-        .capacity = 600 // TO CHANGE!
-    };
+        .capacity = 50000 // TO CHANGE!
+    }
+
+    // Part 1
+    // IdArray idArr = {
+    //     .ids = NULL,
+    //     .size = 0,
+    //     .capacity = 600 // TO CHANGE!
+    // };
 
     rangeArr.ranges = (Range*) malloc(sizeof(Range) * rangeArr.capacity);
     if (NULL == rangeArr.ranges)
@@ -46,13 +54,25 @@ int main(void)
         return 1;
     }
 
-    idArr.ids = (long*) malloc(sizeof(int) * idArr.capacity);
-    if (NULL == idArr.ids)
+    newRangeArr.ranges = (Range*) malloc(sizeof(Range) * rangeArr.capacity);
+    if (NULL = newRangeArr.ranges)
     {
         free(rangeArr.ranges);
-        free(idArr.ids);
+        free(newRangeArr.ranges);
         return 1;
     }
+
+    
+
+    // Part 1
+
+    // idArr.ids = (long*) malloc(sizeof(int) * idArr.capacity);
+    // if (NULL == idArr.ids)
+    // {
+    //     free(rangeArr.ranges);
+    //     free(idArr.ids);
+    //     return 1;
+    // }
     
 
     while (NULL != fgets(buffer, sizeof(buffer), stdin)) 
@@ -71,6 +91,7 @@ int main(void)
             if (sscanf(buffer, "%ld-%ld", &range.min, &range.max) == 2)
             {
                 // printf("%i to %i\n", range.min, range.max); // DEBUG
+                range.isActive = true;
                 rangeArr.ranges[rangeArr.size++] = range;
             }
         }
@@ -92,7 +113,7 @@ int main(void)
     // DEBUG
     // for (int i = 0; i < rangeArr.size; i++) 
     // {
-    //     printf("IN ARR: %i to %i\n", rangeArr.ranges[i].min, rangeArr.ranges[i].max);
+    //     printf("IN ARR: %li to %li is %i\n", rangeArr.ranges[i].min, rangeArr.ranges[i].max, rangeArr.ranges[i].isActive);
     // }
 
     // for (int i = 0; i < idArr.size; i++)
@@ -100,11 +121,38 @@ int main(void)
     //     printf("IN ID ARR: %i\n", idArr.ids[i]);
     // }
 
-    int count = 0;
+
+    for (int i = 0; i < rangeArr.size; i++)
+    {
+        if (!rangeArr.ranges[i].isActive)
+        {
+            continue;
+        }
+        for (int j = i + 1; i < rangeArr.size; i++)
+        {
+            if (!rangeArr.ranges[i].isActive)
+            {
+                continue;
+            }
+
+            int newMin = 0;
+            int newMax = 0;
+
+            if (rangeArr.ranges[i].min >= rangeArr.ranges[j].min &&
+            rangeArr.ranges[i].min <= rangeArr.ranges[j].max)
+
+            
+
+
+        }
+    }
+
+
+
 
 
     // Part 1
-
+    // int count = 0;
     // for (int i = 0; i < idArr.size; i++)
     // {
     //     if (isFresh(idArr.ids[i], rangeArr))
@@ -113,14 +161,16 @@ int main(void)
     //     }
     // }
 
-    printf("%i", count);
+    // printf("%i", count);
 
     free(rangeArr.ranges);
-    free(idArr.ids);
+    free(newRangeArrArr.ids);
 
     return 0;
 }
 
+
+// Part 1
 bool isFresh(long id, RangeArray arr)
 {
 
