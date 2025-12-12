@@ -6,7 +6,6 @@
 typedef struct {
     long min;
     long max;
-    bool isActive;
 } Range;
 
 typedef struct {
@@ -21,8 +20,9 @@ typedef struct {
 //     int capacity;
 // } IdArray;
 
-bool isFresh(long id, RangeArray arr);
-
+// bool isFresh(long id, RangeArray arr);
+void mergeSort(Range arr[], int low , int high);
+void merge(Range arr[], int l, int m, int r);
 int main(void)
 {
     char buffer[256]; 
@@ -31,14 +31,8 @@ int main(void)
     RangeArray rangeArr = {
         .ranges = NULL, 
         .size = 0, 
-        .capacity = 50000 // TO CHANGE!
+        .capacity = 500000, // TO CHANGE!
     };
-
-    RangeArray newRangeArr = {
-        .ranges = NULL,
-        .size = 0,
-        .capacity = 50000 // TO CHANGE!
-    }
 
     // Part 1
     // IdArray idArr = {
@@ -50,7 +44,6 @@ int main(void)
     rangeArr.ranges = (Range*) malloc(sizeof(Range) * rangeArr.capacity);
     if (NULL == rangeArr.ranges)
     {
-        free(rangeArr.ranges);
         return 1;
     }
 
@@ -77,21 +70,20 @@ int main(void)
 
     while (NULL != fgets(buffer, sizeof(buffer), stdin)) 
     {   
-        if (strcmp(buffer, "\n") == 0) 
+        if (buffer[0] == '\n') 
         {
             blankLineFound = true;
             continue;
         }
 
         Range range;
-        long id;
+        // long id;
 
         if (!blankLineFound)
         {
             if (sscanf(buffer, "%ld-%ld", &range.min, &range.max) == 2)
             {
                 // printf("%i to %i\n", range.min, range.max); // DEBUG
-                range.isActive = true;
                 rangeArr.ranges[rangeArr.size++] = range;
             }
         }
@@ -110,48 +102,36 @@ int main(void)
         }
     }
 
-    // DEBUG
-    // for (int i = 0; i < rangeArr.size; i++) 
-    // {
-    //     printf("IN ARR: %li to %li is %i\n", rangeArr.ranges[i].min, rangeArr.ranges[i].max, rangeArr.ranges[i].isActive);
-    // }
-
+    //DEBUG
     // for (int i = 0; i < idArr.size; i++)
     // {
     //     printf("IN ID ARR: %i\n", idArr.ids[i]);
     // }
 
 
-    for (int i = 0; i < rangeArr.size; i++)
+    mergeSort(rangeArr.ranges, 0, rangeArr.size - 1);
+
+    // Debug test sorted
+    // for (int i = 0; i < rangeArr.size; i++) 
+    // {
+    //     printf("IN ARR: %li to %li\n", rangeArr.ranges[i].min, rangeArr.ranges[i].max);
+    // }
+    Range prevRange = rangeArr.ranges[0];
+    long count = 0;
+    for (int i = 1; i < rangeArr.size; i++)
     {
-        if (!rangeArr.ranges[i].isActive)
+        if (rangeArr.ranges[i].min > prevRange.max)
         {
-            continue;
+            count += prevRange.max - prevRange.min + (long)1;
+            prevRange = rangeArr.ranges[i];
         }
-        for (int j = i + 1; j < rangeArr.size; j++)
+        else
         {
-            if (!rangeArr.ranges[j].isActive)
-            {
-                continue;
-            }
-
-            int newMin = 0;
-            int newMax = 0;
-
-            if (rangeArr.ranges[i].min >= rangeArr.ranges[j].min &&
-            rangeArr.ranges[i].min <= rangeArr.ranges[j].max) // |---j.min---i.min---j.max--|
-            {
-                newMin = rangeArr.ranges[j].min
-            }
-
-            if (rangeArr.ranges[i].min <= rangeArr.ranges[j].min &&
-            rangeArr.ranges[j].min <= rangeArr.ranges[i].max) // |----i.min----j.min----i.max---|
-
-            
-
-
+            prevRange.max = (prevRange.max >= rangeArr.ranges[i].max) ? prevRange.max : rangeArr.ranges[i].max;
         }
     }
+    count += prevRange.max - prevRange.min + (long)1;
+    printf("%li\n", count);
 
 
 
@@ -170,23 +150,88 @@ int main(void)
     // printf("%i", count);
 
     free(rangeArr.ranges);
-    free(newRangeArrArr.ids);
+    // free(newRangeArrArr.ids);
 
     return 0;
 }
 
 
 // Part 1
-bool isFresh(long id, RangeArray arr)
-{
+// bool isFresh(long id, RangeArray arr)
+// {
 
-    for (int i = 0; i < arr.size; i++)
+//     for (int i = 0; i < arr.size; i++)
+//     {
+//         if (id >= arr.ranges[i].min && id <= arr.ranges[i].max)
+//         {
+//             return true;
+//         }
+//     }
+
+//     return false;
+// }
+
+// GEEKS4GEEKS mergesort
+void mergeSort(Range arr[], int low , int high)
+{
+    if (low < high)
     {
-        if (id >= arr.ranges[i].min && id <= arr.ranges[i].max)
-        {
-            return true;
+        int mid = (low + high) / 2;
+
+        mergeSort(arr, low, mid);
+        mergeSort(arr, mid + 1, high);
+
+        merge(arr, low, mid, high);
+    }
+}
+
+
+// GEEKS4GEEKS merge
+void merge(Range arr[], int l, int m, int r)
+{
+    
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    // Create temp arrays
+    Range L[n1], R[n2];
+
+    // Copy data to temp arrays L[] and R[]
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    // Merge the temp arrays back into arr[l..r
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i].min <= R[j].min) {
+            arr[k] = L[i];
+            i++;
         }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
     }
 
-    return false;
+    // Copy the remaining elements of L[],
+    // if there are any
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // Copy the remaining elements of R[],
+    // if there are any
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
 }
