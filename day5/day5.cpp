@@ -15,11 +15,11 @@ typedef struct {
     int capacity;
 } RangeArray;
 
-typedef struct {
-    long* ids;
-    int size;
-    int capacity;
-} IdArray;
+// typedef struct {
+//     long* ids;
+//     int size;
+//     int capacity;
+// } IdArray;
 
 bool isFresh(long id, RangeArray arr);
 
@@ -54,13 +54,13 @@ int main(void)
         return 1;
     }
 
-    newRangeArr.ranges = (Range*) malloc(sizeof(Range) * rangeArr.capacity);
-    if (NULL = newRangeArr.ranges)
-    {
-        free(rangeArr.ranges);
-        free(newRangeArr.ranges);
-        return 1;
-    }
+    // newRangeArr.ranges = (Range*) malloc(sizeof(Range) * rangeArr.capacity);
+    // if (NULL = newRangeArr.ranges)
+    // {
+    //     free(rangeArr.ranges);
+    //     free(newRangeArr.ranges);
+    //     return 1;
+    // }
 
     
 
@@ -128,9 +128,9 @@ int main(void)
         {
             continue;
         }
-        for (int j = i + 1; i < rangeArr.size; i++)
+        for (int j = i + 1; j < rangeArr.size; j++)
         {
-            if (!rangeArr.ranges[i].isActive)
+            if (!rangeArr.ranges[j].isActive)
             {
                 continue;
             }
@@ -139,7 +139,13 @@ int main(void)
             int newMax = 0;
 
             if (rangeArr.ranges[i].min >= rangeArr.ranges[j].min &&
-            rangeArr.ranges[i].min <= rangeArr.ranges[j].max)
+            rangeArr.ranges[i].min <= rangeArr.ranges[j].max) // |---j.min---i.min---j.max--|
+            {
+                newMin = rangeArr.ranges[j].min
+            }
+
+            if (rangeArr.ranges[i].min <= rangeArr.ranges[j].min &&
+            rangeArr.ranges[j].min <= rangeArr.ranges[i].max) // |----i.min----j.min----i.max---|
 
             
 

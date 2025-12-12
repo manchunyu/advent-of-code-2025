@@ -1,0 +1,15 @@
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/bin/Debug/net9.0/day11
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/bin/Debug/net9.0/day11.deps.json
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/bin/Debug/net9.0/day11.runtimeconfig.json
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/bin/Debug/net9.0/day11.dll
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/bin/Debug/net9.0/day11.pdb
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.GeneratedMSBuildEditorConfig.editorconfig
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.AssemblyInfoInputs.cache
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.AssemblyInfo.cs
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.csproj.CoreCompileInputs.cache
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.sourcelink.json
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.dll
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/refint/day11.dll
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.pdb
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/day11.genruntimeconfig.cache
+/Users/manchunyu/dev/advent-of-code-2025/day11/day11/obj/Debug/net9.0/ref/day11.dll
